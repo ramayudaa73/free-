@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Tamu Guru dan Siswa - Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: cyan;
+        }
+        header {
+            background-color: blanchedalmond;
+            color: black;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        #loginSection {
+            max-width: 500px;
+            padding: 20px;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #424242;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input, select, textarea {
+            width: 80%;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: blueviolet;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Buku Tamu Guru dan Siswa</h1>
+</header>
+
+<main>
+    <div id="loginSection">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="role">Login sebagai:</label>
+            <select id="role" required>
+                <option value="">Pilih Role</option>
+                <option value="Guru">Guru</option>
+                <option value="Siswa">Siswa</option>
+            </select>
+            <label for="username">Nama:</label>
+            <input type="text" id="username" placeholder="Masukkan nama Anda" required>
+            <button type="submit">Login</button>
+            <div id="loginError" class="error"></div>
+        </form>
+        
+        <form id="bukuTamuForm" style="display: none;">
+            <h2>Form Buku Tamu</h2>
+            <label for="kategori">Kategori:</label>
+            <input type="text" id="kategori" readonly>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Masukkan email" required>
+
+            <label for="alamat">Alamat:</label>
+            <input type="text" id="alamat" placeholder="Masukkan alamat" required>
+
+            <label for="Telepon">Telepon:</label>
+            <input type="number" id="telepon" placeholder="Masukkan No.Telepon" required>
+
+            <label for="Saran & Pesan">Saran & Pesan:</label>
+            <textarea id="Saran & Pesan" placeholder="Tulis Saran Anda" rows="4" required></textarea>
+
+            <button type="submit">Kirim</button>
+        </form>
+    </div>
+</main>
+
+<script>
+    // Ambil elemen-elemen HTML
+    const loginForm = document.getElementById('loginForm');
+    const bukuTamuForm = document.getElementById('bukuTamuForm');
+    const roleInput = document.getElementById('role');
+    const usernameInput = document.getElementById('username');
+    const kategoriInput = document.getElementById('kategori');
+    const loginError = document.getElementById('loginError');
+
+    // Tangani event submit form login
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const role = roleInput.value;
+        const username = usernameInput.value;
+
+        // Validasi input login
+        if (role === '' || username === '') {
+            loginError.textContent = 'Role dan nama harus diisi.';
+            return;
+        }
+
+        // Jika valid, sembunyikan form login dan tampilkan form buku tamu
+        loginForm.style.display = 'none';
+        bukuTamuForm.style.display = 'block';
+
+        // Set kategori berdasarkan role yang dipilih
+        kategoriInput.value = role;
+    });
+
+    // Tangani event submit form buku tamu
+    bukuTamuForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Ambil nilai dari form
+        const kategori = kategoriInput.value;
+        const nama = usernameInput.value;
+        const email = document.getElementById('email').value;
+        const alamat = document.getElementById('alamat').value;
+        const telepon = document.getElementById('telepon').value;
+        const komentar = document.getElementById('Saran & Pesan').value;
+
+        // Simpan data dalam local storage
+        const bukuTamuData = JSON.parse(localStorage.getItem('bukuTamuData')) || [];
+        bukuTamuData.push({ kategori, nama, email, alamat, komentar });
+        localStorage.setItem('bukuTamuData', JSON.stringify(bukuTamuData));
+
+        // Arahkan ke halaman hasil
+        window.location.href = 'hasil.html';
+    });
+</script>
+
+</body>
+</html>

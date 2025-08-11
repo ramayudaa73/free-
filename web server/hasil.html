@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Tamu Guru dan Siswa - Hasil</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: cyan;
+        }
+        header {
+            background-color: greenyellow;
+            color: black;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        h2 {
+            color: black;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: white;
+        }
+        button {
+            padding: 10px;
+            background-color: greenyellow;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>DATA TAMU</h1>
+</header>
+
+<main>
+    <h2>Data  Tamu</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Kategori</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Alamat</th>
+                <th>Telepon</th>
+                <th>Saran</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="tabelBody">
+            <!-- Data akan ditambahkan di sini -->
+        </tbody>
+    </table>
+    <button onclick="window.location.href='halaman_form.html'">Kembali ke Form</button>
+</main>
+
+<script>
+    // Ambil data dari local storage dan tampilkan di tabel
+    const tabelBody = document.getElementById('tabelBody');
+    const bukuTamuData = JSON.parse(localStorage.getItem('bukuTamuData')) || [];
+
+    // Tampilkan data di tabel
+bukuTamuData.forEach((data, index) => {
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${data.kategori}</td>
+        <td>${data.nama}</td>
+        <td>${data.email}</td>
+        <td>${data.alamat}</td>
+        <td>${data.telepon}</td>
+        <td>${data.saran}</td>
+        <td><button onclick="hapusData(${index})">Hapus</button></td>
+    `;
+    tabelBody.appendChild(newRow);
+});
+
+// Fungsi untuk menghapus data berdasarkan indeks
+function hapusData(index) {
+    if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+        const bukuTamuData = JSON.parse(localStorage.getItem('bukuTamuData')) || [];
+        bukuTamuData.splice(index, 1); 
+        localStorage.setItem('bukuTamuData', JSON.stringify(bukuTamuData)); 
+        window.location.reload(); 
+    }
+}
+
+</script>
+
+</body>
+</html>
